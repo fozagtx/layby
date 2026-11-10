@@ -14,6 +14,25 @@ Layaway for local shops, inside Nimiq Pay.
 
 ---
 
+## Deployment
+
+| | |
+| --- | --- |
+| **Live app** | https://laybyapp.vercel.app |
+| **Open in Nimiq Pay** | Mini Apps → Custom URL → `laybyapp.vercel.app` |
+| **Networks** | **Nimiq mainnet** and testnet. The app follows the network Nimiq Pay is on. |
+| **Smart contracts** | None. Payments are native NIM transactions straight to the shop's wallet, so there is nothing to deploy on chain. |
+| **Hosting** | Vercel (Next.js 16) · Neon Postgres |
+
+| Nimiq Pay network | Plans created | Payments verified against |
+| --- | --- | --- |
+| Mainnet (default) | Mainnet plans, marked `MAINNET` | `rpc.nimiqwatch.com` |
+| Testnet (dev menu) | Testnet plans, marked `TESTNET` | `rpc.testnet.nimiqwatch.com` |
+
+Each plan records its network, so testnet and mainnet payments never mix.
+
+---
+
 ## Contents
 
 1. [The problem](#1-the-problem)
