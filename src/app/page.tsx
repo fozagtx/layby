@@ -1,69 +1,100 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { useHost, walletErrorMessage } from "@/lib/client/nimiq";
+import { PlanCard } from "@/components/plan-card";
+import { PlanProgress } from "@/components/plan-progress";
+import { Shopfront } from "@/components/shop-header";
+import { Notice, Rule } from "@/components/ui";
+import { computeProgress, type Plan } from "@/lib/shared";
+
+type PlanRow = Plan & { paid: number };
+
+// Illustrative bricks for the hero: 3 of 8 paid, the "count on your fingers" idea.
+const HERO_SCHEDULE = computeProgress(
+  { price: 8, installments: 8, cadence: "weekly", startDate: "2026-01-01" } as Plan,
+  [{ hash: "", fromAddress: "", valueLuna: 0, rate: 0, fiatValue: 3, blockNumber: 0, paidAt: "", rateSource: "live" }],
+  new Date("2026-01-01T00:00:00Z"),
+).schedule;
 
 export default function Home() {
+  const host = useHost();
+  const [plans, setPlans] = useState<PlanRow[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function loadMyPlans() {
+    if (!host.provider) return;
+    setError(null);
+    setLoading(true);
+    try {
+      const [wallet] = await host.provider.listAccounts();
+      const res = await fetch(`/api/merchants/${encodeURIComponent(wallet)}`);
+      if (!res.ok) throw new Error("Couldn't load your plans. Try again.");
+      setPlans((await res.json()).plans);
+    } catch (e) {
+      setError(walletErrorMessage(e).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="space-y-8 pt-4">
+      <section>
+        <h1 className="font-display text-display-xl">Reserve it today.</h1>
+        <p className="mt-3 text-body">
+          Reserve it today, pay it off in NIM, take it home when it&apos;s paid. Layby is layaway for local shops,
+          inside Nimiq Pay.
+        </p>
+        <div className="mt-6 rounded-card border border-hairline bg-surface p-5">
+          <div className="mb-4 flex h-24 items-center justify-center rounded-tile bg-canvas-sunk">
+            <Shopfront className="h-20" />
+          </div>
+          <PlanProgress schedule={HERO_SCHEDULE} />
+          <p className="mt-3 text-body-s text-ink-muted">
+            One brick per payment. The shop keeps the item; you pay small small; every payment is checked on the
+            Nimiq chain.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="mt-6 grid gap-3">
+          <Link href="/new" className="btn btn-primary">Create a plan</Link>
+          <Link href="/how" className="btn btn-secondary">How it works</Link>
         </div>
-      </main>
+      </section>
+
+      {host.status === "inside" && (
+        <section>
+          <Rule label="Your shop" />
+          {plans === null ? (
+            <button className="btn btn-secondary" onClick={loadMyPlans} disabled={loading}>
+              {loading ? <span className="working">Working</span> : "Show my plans"}
+            </button>
+          ) : plans.length === 0 ? (
+            <div className="rounded-card bg-canvas-sunk p-6 text-center">
+              <Shopfront className="mx-auto h-20" />
+              <p className="mt-3 font-display text-display-m">No plans yet.</p>
+              <p className="mt-1 text-body-s text-ink-muted">Put your first item on layby. It takes a minute.</p>
+              <Link href="/new" className="btn btn-primary mt-4">Create a plan</Link>
+            </div>
+          ) : (
+            <ul className="space-y-4">
+              {plans.map((p) => (
+                <li key={p.id}><PlanCard plan={p} paid={p.paid} /></li>
+              ))}
+            </ul>
+          )}
+          {error && <div className="mt-3"><Notice tone="clay">{error}</Notice></div>}
+        </section>
+      )}
+
+      {host.status === "outside" && (
+        <Notice tone="muted">
+          You&apos;re in a regular browser. You can look at plans here. Paying and creating plans with your wallet
+          happens in the Nimiq Pay app, under Mini Apps.
+        </Notice>
+      )}
     </div>
   );
 }
