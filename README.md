@@ -1,12 +1,14 @@
 <div align="center">
 
-<img src="./public/logo.svg" alt="Layby" width="260" />
+<img src="./assets/banner-1200x630.png" alt="Layby: reserve an item today, pay it off in NIM installments, take it home when it's paid" width="720" />
 
 # Layby
 
-**Reserve it today, pay it off in NIM, take it home when it's paid.**
+**Reserve an item today. Pay it off in NIM installments. Take it home when it's paid.**
 
 Layaway for local shops, inside Nimiq Pay.
+
+Want the new iPhone 18 Pro Max but can't pay for it all at once? With Layby, the shop holds the item while you pay it off in small NIM installments in Nimiq Pay. Payments go straight to the shop's wallet, and Layby checks each one on the Nimiq chain before it counts. When the last payment lands, you show a collect code at the counter and take it home.
 
 [Live app](https://laybyapp.vercel.app) · [How it works](https://laybyapp.vercel.app/how) · [Design system](./DESIGN.md)
 

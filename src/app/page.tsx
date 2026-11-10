@@ -1,22 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { useHost, walletErrorMessage } from "@/lib/client/nimiq";
+import { useEffect, useState } from "react";
+import { local, useHost, walletErrorMessage } from "@/lib/client/nimiq";
+import { LaybyTag } from "@/components/layby-tag";
 import { PlanCard } from "@/components/plan-card";
-import { PlanProgress } from "@/components/plan-progress";
-import { Shopfront } from "@/components/shop-header";
-import { Notice, Rule } from "@/components/ui";
-import { computeProgress, type Plan } from "@/lib/shared";
+import { CheckGlyph, Notice, Rule } from "@/components/ui";
+import type { Plan } from "@/lib/shared";
 
 type PlanRow = Plan & { paid: number };
 
-// Illustrative bricks for the hero: 3 of 8 paid, the "count on your fingers" idea.
-const HERO_SCHEDULE = computeProgress(
-  { price: 8, installments: 8, cadence: "weekly", startDate: "2026-01-01" } as Plan,
-  [{ hash: "", fromAddress: "", valueLuna: 0, rate: 0, fiatValue: 3, blockNumber: 0, paidAt: "", rateSource: "live" }],
-  new Date("2026-01-01T00:00:00Z"),
-).schedule;
+const STEPS = [
+  { title: "The shop reserves it", body: "The shop sets the price, the number of payments and its refund policy, then sends you a link." },
+  { title: "You pay small small", body: "Open the link in Nimiq Pay and pay each part in NIM, when you're ready. One brick fills per payment." },
+  { title: "You take it home", body: "When the last brick fills, show your collect code at the counter. The item is yours." },
+];
+
+const CHECKS = [
+  "Transaction found",
+  "Sent to this shop",
+  "Tagged for this plan",
+  "Executed successfully",
+  "The right amount",
+  "Not counted before",
+];
+
+const SHOWN_PLANS_KEY = "layby:shop-plans";
 
 export default function Home() {
   const host = useHost();
@@ -33,6 +42,7 @@ export default function Home() {
       const res = await fetch(`/api/merchants/${encodeURIComponent(wallet)}`);
       if (!res.ok) throw new Error("Couldn't load your plans. Try again.");
       setPlans((await res.json()).plans);
+      local.set(SHOWN_PLANS_KEY, "1");
     } catch (e) {
       setError(walletErrorMessage(e).message);
     } finally {
@@ -40,43 +50,99 @@ export default function Home() {
     }
   }
 
+  // A shop that has opened its plans before sees them straight away next time.
+  useEffect(() => {
+    if (host.status !== "inside" || local.get(SHOWN_PLANS_KEY) !== "1") return;
+    const t = setTimeout(() => void loadMyPlans(), 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [host.status]);
+
   return (
-    <div className="space-y-8 pt-4">
+    <div className="pt-2">
+      {/* 1. Promise */}
       <section>
-        <h1 className="font-display text-display-xl">Reserve it today.</h1>
-        <p className="mt-3 text-body">
-          Reserve it today, pay it off in NIM, take it home when it&apos;s paid. Layby is layaway for local shops,
-          inside Nimiq Pay.
+        <p className="num text-label text-ink-muted uppercase">Layaway for local shops</p>
+        <h1 className="mt-3 font-display text-display-xl text-balance">
+          Reserve an item today.
+          <span className="mt-2 block text-display-l text-ink-muted">
+            Pay it off in NIM installments. Take it home when it&apos;s paid.
+          </span>
+        </h1>
+        <p className="mt-4 text-body">
+          Want the new iPhone but can&apos;t pay it all at once? The shop holds it for you while you pay in small
+          parts inside Nimiq Pay.
         </p>
-        <div className="mt-6 rounded-card border border-hairline bg-surface p-5">
-          <div className="mb-4 flex h-24 items-center justify-center rounded-tile bg-canvas-sunk">
-            <Shopfront className="h-20" />
-          </div>
-          <PlanProgress schedule={HERO_SCHEDULE} />
-          <p className="mt-3 text-body-s text-ink-muted">
-            One brick per payment. The shop keeps the item; you pay small small; every payment is checked on the
-            Nimiq chain.
+      </section>
+
+      {/* 2. The product, shown */}
+      <section className="mt-8">
+        <LaybyTag />
+      </section>
+
+      {/* 3. One action */}
+      <section className="mt-8">
+        <Link href="/new" className="btn btn-primary">Create a plan</Link>
+        <p className="mt-3 text-center text-body-s text-ink-muted">
+          For shops. Paying for something? Open the link the shop sent you.
+        </p>
+      </section>
+
+      {/* 4. How it works */}
+      <section className="mt-12">
+        <Rule label="How it works" />
+        <ol className="space-y-6">
+          {STEPS.map((s, i) => (
+            <li key={s.title} className="flex gap-4">
+              <span className="num w-7 shrink-0 pt-1 text-label text-ochre">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <h2 className="font-display text-display-m">{s.title}</h2>
+                <p className="mt-1 text-body-s text-ink-muted">{s.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <Link href="/how" className="btn btn-ghost mt-4">Read the full details →</Link>
+      </section>
+
+      {/* 5. The trust mechanism */}
+      <section className="mt-10">
+        <div className="receipt">
+          <p className="num text-label text-ink-muted uppercase">Every payment, checked</p>
+          <h2 className="mt-2 font-display text-display-m">Six checks before a payment counts.</h2>
+          <div className="dotted my-4" />
+          <ul className="space-y-3">
+            {CHECKS.map((c) => (
+              <li key={c} className="num flex items-center gap-3 text-amount-s">
+                <CheckGlyph ok /> {c}
+              </li>
+            ))}
+          </ul>
+          <div className="dotted my-4" />
+          <p className="text-body-s text-ink-muted">
+            Money goes straight to the shop&apos;s wallet. Layby never holds it, and every receipt is public.
           </p>
-        </div>
-        <div className="mt-6 grid gap-3">
-          <Link href="/new" className="btn btn-primary">Create a plan</Link>
-          <Link href="/how" className="btn btn-secondary">How it works</Link>
         </div>
       </section>
 
+      {/* 6. Returning shops (inside Nimiq Pay only) */}
       {host.status === "inside" && (
-        <section>
+        <section className="mt-10">
           <Rule label="Your shop" />
           {plans === null ? (
-            <button className="btn btn-secondary" onClick={loadMyPlans} disabled={loading}>
-              {loading ? <span className="working">Working</span> : "Show my plans"}
-            </button>
+            <div className="rounded-card border border-hairline bg-surface p-5">
+              <p className="font-display text-display-m">Already selling on Layby?</p>
+              <p className="mt-1 text-body-s text-ink-muted">
+                See the plans you created with this Nimiq Pay wallet.
+              </p>
+              <button className="btn btn-secondary mt-4" onClick={loadMyPlans} disabled={loading}>
+                {loading ? <span className="working">Working</span> : "See my plans"}
+              </button>
+            </div>
           ) : plans.length === 0 ? (
-            <div className="rounded-card bg-canvas-sunk p-6 text-center">
-              <Shopfront className="mx-auto h-20" />
-              <p className="mt-3 font-display text-display-m">No plans yet.</p>
+            <div className="rounded-card bg-canvas-sunk p-5">
+              <p className="font-display text-display-m">No plans from this wallet yet.</p>
               <p className="mt-1 text-body-s text-ink-muted">Put your first item on layby. It takes a minute.</p>
-              <Link href="/new" className="btn btn-primary mt-4">Create a plan</Link>
             </div>
           ) : (
             <ul className="space-y-4">
@@ -90,10 +156,12 @@ export default function Home() {
       )}
 
       {host.status === "outside" && (
-        <Notice tone="muted">
-          You&apos;re in a regular browser. You can look at plans here. Paying and creating plans with your wallet
-          happens in the Nimiq Pay app, under Mini Apps.
-        </Notice>
+        <div className="mt-10">
+          <Notice tone="muted">
+            You&apos;re in a regular browser. You can look at plans here. Paying and creating plans happens in the
+            Nimiq Pay app, under Mini Apps.
+          </Notice>
+        </div>
       )}
     </div>
   );

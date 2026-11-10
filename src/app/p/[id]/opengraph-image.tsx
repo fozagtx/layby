@@ -3,7 +3,7 @@ import { getPayments, getPlan } from "@/lib/server/db";
 import { OG, OgBricks, OgFrame, OgMark, ogFonts } from "@/lib/server/og";
 import { computeProgress, formatMoney } from "@/lib/shared";
 
-export const alt = "A Layby plan: reserve it today, pay it off in NIM";
+export const alt = "A Layby plan: reserve an item today, pay it off in NIM installments";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

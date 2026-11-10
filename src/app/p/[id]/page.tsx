@@ -7,7 +7,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const plan = await getPlan(id).catch(() => null);
   if (!plan) return { title: "Plan not found" };
-  const description = `${plan.merchantName} is holding this for ${plan.customerName || "you"}. Pay it off in NIM, take it home when it's paid.`;
+  const description = `${plan.merchantName} is holding this for ${plan.customerName || "you"}. Pay it off in NIM installments. Take it home when it's paid.`;
   return {
     title: `${plan.item} at ${plan.merchantName}`,
     description,

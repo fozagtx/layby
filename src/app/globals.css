@@ -434,3 +434,63 @@ textarea.field {
     margin: 0 auto;
   }
 }
+
+/* ── Dynamic mark: bricks stack, then the last one is paid. Plays once. ── */
+.mark-live rect {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+.mark-live .mark-b1,
+.mark-live .mark-b2,
+.mark-live .mark-b3 {
+  animation: mark-stack 360ms var(--ease) both;
+}
+.mark-live .mark-b2 {
+  animation-delay: 110ms;
+}
+.mark-live .mark-b3 {
+  animation-delay: 220ms;
+}
+.mark-live .mark-fill {
+  animation: mark-paid 320ms var(--ease) 900ms both;
+}
+@keyframes mark-stack {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+@keyframes mark-paid {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* ── Layby tag (landing hero): the paper tag a shop ties to a reserved item ── */
+.tag-card {
+  position: relative;
+  border-radius: var(--r-card);
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+}
+.tag-hole {
+  position: absolute;
+  top: 19px;
+  left: 20px;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline-firm);
+}
+.fade-late {
+  animation: fade-in 240ms linear both;
+}
+
+/* Newly paid brick in the hero art: one scale-and-fill, once. */
+.brick-pop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: brick-new 320ms var(--ease) both;
+}

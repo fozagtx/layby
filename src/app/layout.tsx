@@ -14,7 +14,7 @@ const instrumentSerif = Instrument_Serif({ variable: "--font-instrument-serif", 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://laybyapp.vercel.app"),
   title: { default: "Layby", template: "%s · Layby" },
-  description: "Reserve it today, pay it off in NIM, take it home when it's paid. Layaway for local shops inside Nimiq Pay.",
+  description: "Reserve an item today. Pay it off in NIM installments. Take it home when it's paid. Layaway for local shops inside Nimiq Pay.",
 };
 
 export const viewport: Viewport = {
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="mx-auto flex min-h-dvh w-full max-w-[420px] flex-col px-5">
           <header className="flex items-center justify-between py-4">
             <Link href="/" className="flex items-center gap-2" aria-label="Layby home">
-              <BrickMark />
+              <BrickMark size={24} animate />
               <span className="font-display text-display-m">Layby</span>
             </Link>
             <NetworkBadge />

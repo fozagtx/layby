@@ -2,7 +2,7 @@
 
 > **Drop this file into any coding agent (Claude Code, Cursor, v0, Lovable) as the single source of visual truth.**
 > Product: *Layby — layaway for local shops, paid in NIM.*
-> One line: **"Reserve it today, pay it off in NIM, take it home when it's paid."**
+> One line: **"Reserve an item today. Pay it off in NIM installments. Take it home when it's paid."**
 
 ---
 
@@ -58,7 +58,7 @@ A layby is not a percentage, it is **a number of payments you can count on your 
 *Implication:* the `<PlanProgress>` component is the single most important piece of UI in the app.
 
 ### IV. Honest typography
-Editorial serif for human statements ("Reserve it today."). Neutral grotesque for interface. Mono for anything a person could audit. The type hierarchy itself encodes the honesty claim: *what we say* vs *what the chain says* look visibly different.
+Editorial serif for human statements ("Reserve an item today."). Neutral grotesque for interface. Mono for anything a person could audit. The type hierarchy itself encodes the honesty claim: *what we say* vs *what the chain says* look visibly different.
 
 *Implication:* three typefaces, strictly assigned. Never a serif number, never a mono sentence.
 
@@ -70,7 +70,7 @@ No confetti, no bouncing checkmarks, no celebratory sound when a plan completes.
 ## 3. Brand expression
 
 - **Name treatment:** `Layby` — serif display, lowercase-sensitive, no logotype gimmicks.
-- **Tagline lockup:** "Reserve it today, pay it off in NIM, take it home when it's paid." — set in body grotesque, never in the serif.
+- **Tagline lockup:** "Reserve an item today. Pay it off in NIM installments. Take it home when it's paid." — set in body grotesque, never in the serif.
 - **Mark:** a simple bracket/shelf glyph `⌐` or a three-brick stack. Avoid wallets, coins, chains, locks, handshakes.
 - **Nimiq relationship:** the ochre accent `#B4802C` is a deliberately muted sibling of Nimiq's gold so the handoff into Nimiq Pay feels continuous rather than a jarring brand switch. Where Nimiq Pay is explicitly named, you may use full Nimiq gold `#E9B213`; everywhere else, use the muted ochre.
 
