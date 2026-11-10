@@ -8,7 +8,7 @@
 
 Layaway for local shops, inside Nimiq Pay.
 
-Want the new iPhone 18 Pro Max but can't pay for it all at once? With Layby, the shop holds the item while you pay it off in small NIM installments in Nimiq Pay. Payments go straight to the shop's wallet, and Layby checks each one on the Nimiq chain before it counts. When the last payment lands, you show a collect code at the counter and take it home.
+Want the new iPhone 18 Pro Max but can't pay for it all at once? With Layby, the shop holds the item while you pay it off in NIM installments in Nimiq Pay. Payments go straight to the shop's wallet, and Layby checks each one on the Nimiq chain before it counts. When the last payment lands, you show a collect code at the counter and take it home.
 
 [Live app](https://laybyapp.vercel.app) · [How it works](https://laybyapp.vercel.app/how) · [Design system](./DESIGN.md)
 
@@ -234,6 +234,9 @@ signed quotes (honoured, expired, tampered, wrong currency).
 - Collect-code input (`src/components/otp-input.tsx`) adapted from [Rare UI](https://rareui.com) by Swami Malode,
   used under its MIT + Commons Clause + Attribution license. That file keeps its original notice and license terms.
 - Smooth scrolling on desktop by [Lenis](https://github.com/darkroomengineering/lenis).
+- Home page phone photo (`public/hero-phone.jpg`, cropped) by [Nejc Soklič](https://unsplash.com/@nejc_soklic) on
+  [Unsplash](https://unsplash.com/photos/uBO-jDcJAUs), used under the Unsplash License. iPhone is a trademark of
+  Apple Inc.; Layby is not affiliated with Apple.
 
 ---
 

@@ -62,21 +62,14 @@ export default function Home() {
     <div className="pt-2">
       {/* 1. Promise */}
       <section>
-        <p className="num text-label text-ink-muted uppercase">Layaway for local shops</p>
-        <h1 className="mt-3 font-display text-display-xl text-balance">
-          Reserve an item today.
-          <span className="mt-2 block text-display-l text-ink-muted">
-            Pay it off in NIM installments. Take it home when it&apos;s paid.
-          </span>
-        </h1>
-        <p className="mt-4 text-body">
-          Want the new iPhone but can&apos;t pay it all at once? The shop holds it for you while you pay in small
-          parts inside Nimiq Pay.
+        <h1 className="font-display text-display-xl text-balance">Reserve an item today.</h1>
+        <p className="mt-3 font-display text-display-m text-ink-muted text-balance">
+          Pay it off in NIM installments. Take it home when it&apos;s paid.
         </p>
       </section>
 
       {/* 2. The product, shown */}
-      <section className="mt-8">
+      <section className="mt-6">
         <LaybyTag />
       </section>
 
@@ -84,7 +77,7 @@ export default function Home() {
       <section className="mt-8">
         <Link href="/new" className="btn btn-primary">Create a plan</Link>
         <p className="mt-3 text-center text-body-s text-ink-muted">
-          For shops. Paying for something? Open the link the shop sent you.
+          For shops. Customers pay from the link the shop sends.
         </p>
       </section>
 
@@ -118,10 +111,6 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <div className="dotted my-4" />
-          <p className="text-body-s text-ink-muted">
-            Money goes straight to the shop&apos;s wallet. Layby never holds it, and every receipt is public.
-          </p>
         </div>
       </section>
 

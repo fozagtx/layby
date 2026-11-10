@@ -2,7 +2,7 @@ import Link from "next/link";
 import { computeProgress, formatDate, formatMoney, type Plan } from "@/lib/shared";
 import { PlanProgress } from "./plan-progress";
 import { Pill } from "./ui";
-import { Shopfront } from "./shop-header";
+import { Monogram } from "./shop-header";
 
 /** DESIGN.md §6 PlanCard. Whole card is the tap target. */
 export function PlanCard({ plan, paid }: { plan: Plan; paid: number }) {
@@ -17,7 +17,7 @@ export function PlanCard({ plan, paid }: { plan: Plan; paid: number }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={`/api/plans/${plan.id}/photo`} alt="" className="h-full w-full object-cover" loading="lazy" />
         ) : (
-          <Shopfront className="h-full w-full p-8" />
+          <Monogram name={plan.item} className="h-full w-full text-[5rem]" />
         )}
       </div>
       <p className="text-body font-medium">{plan.item}</p>

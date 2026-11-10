@@ -32,7 +32,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
   const paidCount = progress.schedule.filter((s) => s.covered).length;
   const status =
     plan.status === "collected" ? "COLLECTED" : progress.fullyPaid ? "PAID IN FULL" : `${paidCount} OF ${plan.installments} PAID`;
-  const amount = `${formatMoney(progress.paid, plan.currency)} of ${formatMoney(plan.price, plan.currency)}`;
+  const amount = `${formatMoney(progress.paid, plan.currency, { symbol: false })} of ${formatMoney(plan.price, plan.currency, { symbol: false })}`;
   const shop = plan.merchantName.toUpperCase();
   const fonts = await ogFonts(`${plan.item}Layby`, `${shop}${status}${amount}0123456789 LAYBY·PAIDINNIM`);
 

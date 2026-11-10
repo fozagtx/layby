@@ -158,7 +158,8 @@ export function computeProgress(plan: Plan, payments: Payment[], now = new Date(
   };
 }
 
-export function formatMoney(amount: number, currency: Currency) {
+/** `symbol: false` keeps the ISO code (GHS, NGN) for renderers without the ₵ / ₦ glyphs, such as the share images. */
+export function formatMoney(amount: number, currency: Currency, { symbol = true }: { symbol?: boolean } = {}) {
   if (currency === "NIM") {
     return `${new Intl.NumberFormat("en", { maximumFractionDigits: 2 }).format(amount)} NIM`;
   }
@@ -166,6 +167,7 @@ export function formatMoney(amount: number, currency: Currency) {
     return new Intl.NumberFormat("en", {
       style: "currency",
       currency,
+      currencyDisplay: symbol ? "narrowSymbol" : "code",
       maximumFractionDigits: amount >= 1000 ? 0 : 2,
     }).format(amount);
   } catch {
