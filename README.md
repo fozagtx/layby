@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="./public/logo.svg" alt="Layby" width="260" />
+
 # Layby
 
 **Reserve it today, pay it off in NIM, take it home when it's paid.**

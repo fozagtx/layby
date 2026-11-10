@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 72" width="260" height="72" role="img" aria-label="Layby">
+  <rect width="260" height="72" rx="16" fill="#F4F1EA"/>
+  <rect x="16" y="44" width="40" height="12" rx="3" fill="#0E3B32"/>
+  <rect x="22" y="30" width="28" height="10" rx="3" fill="#0E3B32"/>
+  <rect x="28.5" y="17" width="15" height="9" rx="2.5" fill="none" stroke="#B4802C" stroke-width="2.5" stroke-dasharray="4 2.5"/>
+  <text x="72" y="52" font-family="'Instrument Serif', Georgia, 'Times New Roman', serif" font-size="40" fill="#141413">Layby</text>
+</svg>
