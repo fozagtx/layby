@@ -117,9 +117,12 @@ export function PlanView({ id }: { id: string }) {
 
       <div className="flex items-start justify-between gap-3">
         <ShopHeader name={plan.merchantName} place={plan.shopPlace} />
-        <div className="shrink-0">
-          <NetworkPill network={plan.network} />
-        </div>
+        {/* Inside Nimiq Pay the header already flags testnet; in a browser, flag a test plan here instead. */}
+        {host.status !== "inside" && (
+          <div className="shrink-0">
+            <NetworkPill network={plan.network} />
+          </div>
+        )}
       </div>
 
       {plan.hasPhoto && (

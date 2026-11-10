@@ -149,7 +149,7 @@ export function FulfilView({ id }: { id: string }) {
             {data?.progress.fullyPaid && <span className="stamp text-green">Paid in full</span>}
           </div>
           {data && (
-            <ul className="num mt-4 max-h-40 space-y-1 overflow-auto text-amount-s">
+            <ul data-lenis-prevent className="num mt-4 max-h-40 space-y-1 overflow-auto text-amount-s">
               {data.payments.map((p) => (
                 <li key={p.hash} className="flex justify-between text-ink-muted">
                   <span>{shortHash(p.hash)}</span>

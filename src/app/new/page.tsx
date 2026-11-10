@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { local, useHost, walletErrorMessage } from "@/lib/client/nimiq";
 import { useToday } from "@/lib/client/hooks";
 import { resizePhoto } from "@/lib/client/photo";
-import { NetworkPill } from "@/components/network-badge";
 import { PlanProgress } from "@/components/plan-progress";
 import { Notice } from "@/components/ui";
 import {
@@ -137,10 +136,7 @@ export default function NewPlan() {
 
   return (
     <form onSubmit={submit} className="space-y-8">
-      <div className="flex items-start justify-between gap-3 pt-2">
-        <h1 className="font-display text-display-l">Set up a layby.</h1>
-        <NetworkPill network={network} />
-      </div>
+      <h1 className="pt-2 font-display text-display-l">Set up a layby.</h1>
 
       {/* 1. Item photo, camera first */}
       <div>

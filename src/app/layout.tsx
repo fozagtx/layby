@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { NetworkBadge } from "@/components/network-badge";
 import { OfflineBar } from "@/components/offline-bar";
 import { BrickMark } from "@/components/brick-mark";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full">
+        <SmoothScroll>
         <OfflineBar />
         <div className="mx-auto flex min-h-dvh w-full max-w-[420px] flex-col px-5">
           <header className="flex items-center justify-between py-4">
@@ -46,6 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
           </footer>
         </div>
+        </SmoothScroll>
       </body>
     </html>
   );
