@@ -227,6 +227,12 @@ signed quotes (honoured, expired, tampered, wrong currency).
 | Shop photo uses an illustration | Storefront photo upload |
 | English only | Use `window.nimiqPay.language` for translations |
 
+## Credits
+
+- Collect-code input (`src/components/otp-input.tsx`) adapted from [Rare UI](https://rareui.com) by Swami Malode,
+  used under its MIT + Commons Clause + Attribution license. That file keeps its original notice and license terms.
+- Smooth scrolling on desktop by [Lenis](https://github.com/darkroomengineering/lenis).
+
 ---
 
-MIT License. See [LICENSE](./LICENSE).
+MIT License for Layby's own code. See [LICENSE](./LICENSE). Third-party components keep their own licenses (see Credits).

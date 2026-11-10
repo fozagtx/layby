@@ -62,14 +62,16 @@ export function ReceiptView({ hash }: { hash: string }) {
         </p>
       </div>
 
-      <Receipt
-        plan={plan}
-        payment={payment}
-        checks={data.checks}
-        memo={data.memo}
-        source={data.source}
-        stamp={plan.status === "collected" ? "collected" : null}
-      />
+      <div className={fromPay ? "receipt-print" : undefined}>
+        <Receipt
+          plan={plan}
+          payment={payment}
+          checks={data.checks}
+          memo={data.memo}
+          source={data.source}
+          stamp={plan.status === "collected" ? "collected" : null}
+        />
+      </div>
 
       <div className="no-print grid gap-3">
         <Link href={`/p/${plan.id}`} className="btn btn-primary">Back to the plan</Link>

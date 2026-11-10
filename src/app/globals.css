@@ -337,6 +337,21 @@ textarea.field {
   bottom: 0;
 }
 
+/* Receipt printing out of the till, once, after a payment is confirmed. */
+.receipt-print {
+  animation: receipt-print 700ms var(--ease) both;
+}
+@keyframes receipt-print {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-16px);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+  }
+}
+
 /* ── Stamp ───────────────────────────────────────────────── */
 .stamp {
   display: inline-block;

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useStored } from "@/lib/client/hooks";
 import { Notice } from "@/components/ui";
+import { OtpInput, type OtpStatus } from "@/components/otp-input";
 import { formatDate, formatNim, shortHash, type Payment, type Plan, type Progress } from "@/lib/shared";
 
 interface PlanData {
@@ -36,6 +37,7 @@ export function FulfilView({ id }: { id: string }) {
   const [data, setData] = useState<PlanData | null>(null);
   const [stage, setStage] = useState<Stage>("scan");
   const [code, setCode] = useState("");
+  const [codeStatus, setCodeStatus] = useState<OtpStatus>("idle");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [camera, setCamera] = useState<"starting" | "on" | "unavailable">("starting");
@@ -188,12 +190,34 @@ export function FulfilView({ id }: { id: string }) {
       )}
 
       {(stage === "manual" || camera === "unavailable") && (
-        <form onSubmit={(e) => { e.preventDefault(); accept(code); }} className="space-y-3">
-          <label className="label" htmlFor="code">Collect code</label>
-          <input id="code" className="field num text-center text-amount-m tracking-[0.3em] uppercase" maxLength={6}
-            autoComplete="off" autoCapitalize="characters" value={code}
-            onChange={(e) => setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))} />
+        <form onSubmit={(e) => { e.preventDefault(); accept(code); }} className="space-y-4">
+          <span className="label" id="code-label">Collect code from the customer&apos;s screen</span>
+          <div className="flex justify-center" aria-labelledby="code-label">
+            <OtpInput
+              length={6}
+              type="both"
+              size="sm"
+              autoFocus
+              value={code}
+              status={codeStatus}
+              onChange={(v) => {
+                setCode(v.toUpperCase());
+                setCodeStatus("idle");
+              }}
+              onComplete={(v) => {
+                // Let the green ring trace before the confirmation sheet rises.
+                if (parseCode(v, id)) {
+                  setCodeStatus("success");
+                  setTimeout(() => accept(v), 650);
+                } else {
+                  setCodeStatus("error");
+                  accept(v);
+                }
+              }}
+            />
+          </div>
           <button className="btn btn-primary" disabled={code.length !== 6}>Check code</button>
+          {code.length !== 6 && <p className="-mt-2 text-center text-body-s text-ink-muted">Type all 6 characters.</p>}
         </form>
       )}
 

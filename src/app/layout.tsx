@@ -12,7 +12,8 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 const instrumentSerif = Instrument_Serif({ variable: "--font-instrument-serif", weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Layby",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://laybyapp.vercel.app"),
+  title: { default: "Layby", template: "%s · Layby" },
   description: "Reserve it today, pay it off in NIM, take it home when it's paid. Layaway for local shops inside Nimiq Pay.",
 };
 

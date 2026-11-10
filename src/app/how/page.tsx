@@ -68,6 +68,11 @@ export default function How() {
       </ul>
 
       <Link href="/new" className="btn btn-primary">Create a plan</Link>
+
+      <p className="text-caption text-ink-muted">
+        Collect-code input adapted from{" "}
+        <a href="https://rareui.com" target="_blank" rel="noreferrer" className="underline underline-offset-2">Rare UI</a>.
+      </p>
     </div>
   );
 }
